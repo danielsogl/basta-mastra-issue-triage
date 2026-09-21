@@ -27,7 +27,7 @@ Jeder Step ist ein Git-Tag. Mit `git checkout step-03` springst du zum jeweilige
 | `step-03` | **Workflow** | Studio → Workflows → *triage-workflow* mit `{ "issueNumber": 105 }` (Duplikat) und `101` (neu). Graph mit `parallel` und `branch` ansehen |
 | `step-04` | **Human-in-the-Loop** | Workflow pausiert vor dem Posten (`suspend`). Im Studio freigeben oder Antwort anpassen (`resume`). Terminal: `node --env-file=.env scripts/run-workflow.ts 101` |
 | `step-05` | **MCP-Server** | Agent und Tools als MCP-Server. `.mcp.json` ist enthalten → `claude` im Projektordner starten → „Nutze triage, um Issue #104 zu bewerten“ |
-| `step-06` | **Evals & Tracing** | `npm run eval` führt Quick Checks mit Vitest aus. Studio → Observability → Traces zeigt jeden Tool-Call |
+| `step-06` | **Evals & Tracing** | `npm run eval` führt Quick Checks mit Vitest aus. Zwei eingebaute Scorer bewerten jeden Studio-Chat live. Studio → Observability → Traces zeigt jeden Tool-Call |
 | `step-07` | **Durable Agents** | `node --env-file=.env scripts/durable.ts`: Stream abbrechen und per `observe(runId)` wieder anhängen, ohne dass Chunks verloren gehen |
 
 ## Projektstruktur

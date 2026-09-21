@@ -1,6 +1,16 @@
 import { Agent } from '@mastra/core/agent'
 import { Memory } from '@mastra/memory'
+import {
+  createPromptAlignmentScorerLLM,
+  createToolCallAccuracyScorerCode,
+} from '@mastra/evals/scorers/prebuilt'
 import { getIssue, postComment, searchIssues } from '../tools/github.ts'
+
+// Modell per .env austauschbar, z. B. MODEL=openai/gpt-5.4-mini
+const model = process.env.MODEL ?? 'anthropic/claude-sonnet-5'
+
+// Nur Chats mit Thread bewerten (Studio). Workflow-Schritte, Evals und MCP haben keinen.
+const onlyChats = { op: 'exists', path: 'threadId' } as const
 
 export const triageAgent = new Agent({
   id: 'triage-agent',
@@ -19,8 +29,7 @@ export const triageAgent = new Agent({
     Produktionsausfälle oder Geldverlust sind immer "critical".
     Halte Team-Konventionen (Labels, Zuständigkeiten), die dir genannt werden, im Working Memory fest und wende sie an.
   `,
-  // Modell per .env austauschbar, z. B. MODEL=openai/gpt-5.4-mini
-  model: process.env.MODEL ?? 'anthropic/claude-sonnet-5',
+  model,
   tools: { getIssue, searchIssues, postComment },
   // Storage kommt von der Mastra-Instanz (LibSQL)
   memory: new Memory({
@@ -37,4 +46,19 @@ export const triageAgent = new Agent({
       },
     },
   }),
+  // Live-Evals: laufen nach jeder Antwort im Hintergrund, Scores im Studio unter Scorers
+  scorers: {
+    // LLM als Richter: Hält sich die Antwort an Prompt und Instructions?
+    promptAlignment: {
+      scorer: createPromptAlignmentScorerLLM({ model }),
+      sampling: { type: 'ratio', rate: 1 },
+      filter: onlyChats,
+    },
+    // Reiner Code, kein Modellaufruf: erst getIssue, dann searchIssues?
+    toolOrder: {
+      scorer: createToolCallAccuracyScorerCode({ expectedToolOrder: ['getIssue', 'searchIssues'] }),
+      sampling: { type: 'ratio', rate: 1 },
+      filter: onlyChats,
+    },
+  },
 })
