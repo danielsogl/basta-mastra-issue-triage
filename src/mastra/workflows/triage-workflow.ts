@@ -1,6 +1,6 @@
 import { createStep, createWorkflow } from '@mastra/core/workflows'
 import { z } from 'zod'
-import { getIssue, issueSchema } from '../tools/github.ts'
+import { getIssue, issueSchema, publishComment } from '../tools/github.ts'
 
 const classificationSchema = z.object({
   type: z.enum(['bug', 'feature', 'question']),
@@ -25,6 +25,11 @@ const resultSchema = z.object({
   action: z.enum(['close-as-duplicate', 'reply']),
   labels: z.array(z.string()),
   comment: z.string(),
+})
+
+const publishedSchema = resultSchema.extend({
+  posted: z.boolean(),
+  url: z.string().optional(),
 })
 
 const fetchIssue = createStep(getIssue)
@@ -54,7 +59,8 @@ const findDuplicates = createStep({
     const res = await agent.generate(
       `Prüfe mit searchIssues, ob Issue #${inputData.number} ein Duplikat eines anderen Issues ist. ` +
         `Nur echte Duplikate (gleiches Problem), keine bloß thematisch ähnlichen.\n\n${inputData.title}\n${inputData.body}`,
-      { structuredOutput: { schema: duplicateSchema } },
+      // Nur suchen: mit allen Tools ruft der Agent sonst gern selbst postComment auf
+      { structuredOutput: { schema: duplicateSchema }, activeTools: ['searchIssues'] },
     )
     return res.object
   },
@@ -100,11 +106,47 @@ const draftReply = createStep({
   },
 })
 
+// Human-in-the-Loop: Workflow pausiert, Snapshot landet im Storage, resume() macht weiter
+const humanReview = createStep({
+  id: 'human-review',
+  inputSchema: resultSchema,
+  outputSchema: resultSchema.extend({ approved: z.boolean() }),
+  suspendSchema: resultSchema,
+  resumeSchema: z.object({
+    approved: z.boolean(),
+    comment: z.string().optional().describe('Optional: überarbeiteter Kommentar'),
+  }),
+  execute: async ({ inputData, resumeData, suspend }) => {
+    if (!resumeData) return await suspend(inputData)
+    return {
+      ...inputData,
+      comment: resumeData.comment ?? inputData.comment,
+      approved: resumeData.approved,
+    }
+  },
+})
+
+const publish = createStep({
+  id: 'publish',
+  inputSchema: resultSchema.extend({ approved: z.boolean() }),
+  outputSchema: publishedSchema,
+  execute: async ({ inputData: { approved, ...result } }) => {
+    if (!approved) return { ...result, posted: false }
+    const { url } = await publishComment({
+      number: result.issueNumber,
+      comment: result.comment,
+      labels: result.labels,
+      close: result.action === 'close-as-duplicate',
+    })
+    return { ...result, posted: true, url }
+  },
+})
+
 export const triageWorkflow = createWorkflow({
   id: 'triage-workflow',
   description: 'Triagiert ein GitHub-Issue: klassifizieren, Duplikate suchen, Antwort entwerfen',
   inputSchema: z.object({ issueNumber: z.number() }),
-  outputSchema: resultSchema,
+  outputSchema: publishedSchema,
 })
   .map(async ({ inputData }) => ({ number: inputData.issueNumber }), { id: 'to-issue-input' })
   .then(fetchIssue)
@@ -124,4 +166,6 @@ export const triageWorkflow = createWorkflow({
   .map(async ({ inputData }) => inputData['close-as-duplicate'] ?? inputData['draft-reply']!, {
     id: 'pick-result',
   })
+  .then(humanReview)
+  .then(publish)
   .commit()
