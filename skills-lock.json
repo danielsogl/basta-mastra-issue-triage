@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "mastra": {
+      "source": "mastra-ai/skills",
+      "sourceType": "github",
+      "skillPath": "skills/mastra/SKILL.md",
+      "computedHash": "9e3403e55de511ca1cc639713dd4fd159fe860177b23698a654770d1fad803c5"
+    }
+  }
+}
