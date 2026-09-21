@@ -1,0 +1,27 @@
+{
+  "name": "basta-mastra-issue-triage",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "mastra dev",
+    "build": "mastra build",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@mastra/core": "^1.68.0",
+    "@mastra/duckdb": "^1.10.0",
+    "@mastra/libsql": "^1.23.1",
+    "@mastra/memory": "^1.31.0",
+    "@mastra/observability": "^1.17.9",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "mastra": "^1.31.0",
+    "typescript": "^7.0.2"
+  }
+}
