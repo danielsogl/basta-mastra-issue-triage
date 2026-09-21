@@ -16,6 +16,14 @@ npm run dev            # Studio: http://localhost:4111
 
 Standardmodell ist `anthropic/claude-sonnet-5`. Für einen anderen Provider setzt du in `.env` zum Beispiel `MODEL=openai/gpt-5-mini` und `OPENAI_API_KEY`. Mastra erkennt den Provider am Präfix, zusätzliche Pakete brauchst du nicht.
 
+## Mit einem Coding-Agent weiterbauen
+
+Im Repo liegt der offizielle [Mastra-Skill](https://github.com/mastra-ai/skills) unter `.agents/skills/mastra` (für Claude Code verlinkt nach `.claude/skills/mastra`). Er bringt deinem Coding-Agent bei, die aktuelle Mastra-API in `node_modules/@mastra/*/dist/docs/` nachzuschlagen, statt veralteten Trainingsdaten zu vertrauen. Claude Code, Cursor, Codex und Co. finden ihn automatisch.
+
+```bash
+npx skills update mastra -p   # Skill aktualisieren
+```
+
 ## Die Steps
 
 Jeder Step ist ein Git-Tag. `git checkout step-03` springt zum jeweiligen Stand, `git diff step-02 step-03` zeigt, was dazukam. Nach einem Checkout lädt `npm run dev` automatisch neu. Zurück zum Endstand geht es mit `git checkout main`.
@@ -106,11 +114,11 @@ src/mastra/
   workflows/                triage-workflow
   mcp/server.ts             MCP-Server
 tests/                      Evals (Vitest)
+.agents/skills/mastra/       Mastra-Skill für Coding-Agents
 scripts/                    Runner fürs Terminal
 ```
 
 ## Weiterführend
 
 - Doku: <https://mastra.ai/docs>, für Coding-Agents <https://mastra.ai/llms.txt>
-- Mastra-Skill für deinen Coding-Agent: `npx skills add mastra-ai/skills`
 - Echte GitHub-Anbindung: `execute()` in `src/mastra/tools/github.ts` durch Octokit-Calls ersetzen, die Schemas bleiben gleich.
