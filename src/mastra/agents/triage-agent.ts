@@ -1,4 +1,5 @@
 import { Agent } from "@mastra/core/agent";
+import { Memory } from "@mastra/memory";
 import { getIssue, searchIssues } from "../tools/github.ts";
 
 export const triageAgent = new Agent({
@@ -16,8 +17,24 @@ export const triageAgent = new Agent({
     4. Antworte kurz und strukturiert auf Deutsch. Nenne Duplikate mit Nummer.
 
     Produktionsausfälle oder Geldverlust sind immer "critical".
+    Halte Team-Konventionen (Labels, Zuständigkeiten), die dir genannt werden, im Working Memory fest und wende sie an.
   `,
   // Modell per .env austauschbar, z. B. MODEL=openai/gpt-5.4-mini
   model: process.env.MODEL ?? "anthropic/claude-sonnet-5",
   tools: { getIssue, searchIssues },
+  // Storage kommt von der Mastra-Instanz (LibSQL)
+  memory: new Memory({
+    options: {
+      // Team-Konventionen gelten über alle Threads hinweg (scope: resource)
+      workingMemory: {
+        enabled: true,
+        scope: "resource",
+        template: `# Team-Konventionen
+- **Labels**:
+- **Zuständigkeiten**:
+- **Sonstiges**:
+`,
+      },
+    },
+  }),
 });
