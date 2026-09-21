@@ -45,3 +45,31 @@ export const searchIssues = createTool({
     return { results: z.array(issueSchema).parse(results) }
   },
 })
+
+// ponytail: nur Konsolen-Ausgabe, hier käme octokit.issues.createComment()
+export async function publishComment(c: {
+  number: number
+  comment: string
+  labels: string[]
+  close: boolean
+}) {
+  console.log(
+    `\n💬 #${c.number} [${c.labels.join(', ')}]${c.close ? ' (closed)' : ''}\n${c.comment}\n`,
+  )
+  return { url: `https://github.com/acme/shop-api/issues/${c.number}#comment-${Date.now()}` }
+}
+
+export const postComment = createTool({
+  id: 'postComment',
+  description: 'Postet einen Kommentar auf ein Issue und setzt Labels',
+  inputSchema: z.object({
+    number: z.number(),
+    comment: z.string(),
+    labels: z.array(z.string()),
+    close: z.boolean().default(false),
+  }),
+  outputSchema: z.object({ url: z.string() }),
+  // Agent fragt vor jedem Aufruf nach Freigabe (Studio zeigt Approve/Decline)
+  requireApproval: true,
+  execute: publishComment,
+})
