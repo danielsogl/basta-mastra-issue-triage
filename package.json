@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "mastra dev",
     "build": "mastra build",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "test": "vitest run",
+    "eval": "node --env-file=.env node_modules/vitest/vitest.mjs run tests/triage.eval.test.ts"
   },
   "dependencies": {
     "@mastra/core": "^1.67.0",
@@ -21,8 +23,10 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@mastra/evals": "^1.10.2",
     "@types/node": "^26.6.2",
     "mastra": "^1.30.0",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
   }
 }
