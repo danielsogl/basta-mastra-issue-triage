@@ -1,0 +1,82 @@
+[
+  {
+    "number": 101,
+    "title": "Login schlägt nach 30 Sekunden mit Timeout fehl",
+    "body": "Seit dem Update auf 2.4.0 hängt der Login-Request und bricht nach 30s mit 504 ab. Betrifft nur Nutzer mit SSO (Azure AD). Logs zeigen 'token exchange pending'.",
+    "author": "mkrause",
+    "state": "open",
+    "labels": []
+  },
+  {
+    "number": 102,
+    "title": "Dark Mode für das Admin-Dashboard",
+    "body": "Wäre super, wenn das Admin-Dashboard einen Dark Mode hätte. Viele von uns arbeiten abends und das weiße UI blendet.",
+    "author": "lena-dev",
+    "state": "open",
+    "labels": []
+  },
+  {
+    "number": 103,
+    "title": "Wie konfiguriere ich Rate Limiting pro API-Key?",
+    "body": "In der Doku finde ich nur das globale Rate Limit. Kann ich unterschiedliche Limits pro API-Key setzen? Falls ja, wo?",
+    "author": "tobi_h",
+    "state": "open",
+    "labels": []
+  },
+  {
+    "number": 104,
+    "title": "Bestellungen werden doppelt abgebucht",
+    "body": "Kunden melden doppelte Abbuchungen, wenn sie im Checkout zweimal auf 'Kaufen' klicken. Kein Idempotency-Key im Payment-Request. Passiert in Produktion seit heute Morgen, ca. 40 Fälle.",
+    "author": "support-team",
+    "state": "open",
+    "labels": []
+  },
+  {
+    "number": 105,
+    "title": "SSO Anmeldung hängt, dann 504 Gateway Timeout",
+    "body": "Beim Login über Azure AD dreht sich der Spinner ewig, danach kommt ein 504. Version 2.4.0. Normale Passwort-Anmeldung geht.",
+    "author": "jana.w",
+    "state": "open",
+    "labels": []
+  },
+  {
+    "number": 106,
+    "title": "CSV-Export der Bestellungen",
+    "body": "Unsere Buchhaltung braucht einen CSV-Export aller Bestellungen eines Monats. Aktuell kopieren wir das händisch aus der Tabelle.",
+    "author": "fin-ops",
+    "state": "open",
+    "labels": []
+  },
+  {
+    "number": 107,
+    "title": "Produktsuche ist extrem langsam bei > 10.000 Artikeln",
+    "body": "Die Suche braucht bei unserem Katalog (12k Artikel) 8-10 Sekunden. EXPLAIN zeigt einen Full Table Scan auf products.name.",
+    "author": "perf-guy",
+    "state": "open",
+    "labels": []
+  },
+  {
+    "number": 108,
+    "title": "Unterstützt ihr Webhooks für Bestellstatus?",
+    "body": "Wir würden gerne benachrichtigt werden, wenn sich der Status einer Bestellung ändert. Gibt es dafür Webhooks oder müssen wir pollen?",
+    "author": "partner-xyz",
+    "state": "open",
+    "labels": []
+  },
+  {
+    "number": 90,
+    "title": "Timeout beim SSO-Login mit Azure AD",
+    "body": "Token exchange mit Azure AD dauert zu lange, Login bricht nach 30s ab. Workaround: Token-Cache aktivieren (AUTH_TOKEN_CACHE=true).",
+    "author": "mkrause",
+    "state": "closed",
+    "labels": ["bug", "auth"]
+  },
+  {
+    "number": 85,
+    "title": "Webhooks für Order-Events",
+    "body": "Feature Request: Webhooks für order.created, order.shipped, order.cancelled. Umgesetzt in 2.2.0, siehe docs/webhooks.md.",
+    "author": "partner-abc",
+    "state": "closed",
+    "labels": ["feature", "api"]
+  }
+]
