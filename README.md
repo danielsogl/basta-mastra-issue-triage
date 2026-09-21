@@ -114,7 +114,7 @@ src/mastra/
   workflows/                triage-workflow
   mcp/server.ts             MCP-Server
 tests/                      Evals (Vitest)
-.agents/skills/mastra/       Mastra-Skill für Coding-Agents
+.agents/skills/mastra/      Mastra-Skill für Coding-Agents
 scripts/                    Runner fürs Terminal
 ```
 
