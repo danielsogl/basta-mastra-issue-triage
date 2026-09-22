@@ -34,7 +34,7 @@ Die Terminal-Befehle führst du in einem zweiten Terminal im Projektordner aus.
 
 Ein Agent mit zwei Tools (`getIssue`, `searchIssues`) und Tracing im Studio.
 
-- Studio → Agents → *Triage Agent* → „Triagiere Issue #104“
+- Studio > Agents > *Triage Agent* > „Triagiere Issue #104“
 - Terminal: `node --env-file=.env scripts/triage.ts 105`
 
 Erwartet: Du siehst die Tool-Calls im Chat. #104 bekommt die Priorität **critical** (doppelte Abbuchungen in Produktion), bei #105 nennt der Agent die Duplikate #101 und #90.
@@ -44,7 +44,7 @@ Erwartet: Du siehst die Tool-Calls im Chat. #104 bekommt die Priorität **critic
 Working Memory mit Team-Konventionen, gültig über alle Threads (`scope: 'resource'`).
 
 1. Im Chat: „Merke dir: Performance-Themen bekommen immer das Label perf. Zuständig ist Team Platform.“
-2. *New Chat* → „Triagiere Issue #107“
+2. *New Chat* öffnen, dann „Triagiere Issue #107“
 
 Erwartet: Label `perf` und Team Platform, obwohl der neue Thread davon nichts weiß. Unten links unter *Memory* steht der gespeicherte Stand.
 
@@ -52,7 +52,7 @@ Erwartet: Label `perf` und Team Platform, obwohl der neue Thread davon nichts we
 
 Issue laden, dann parallel klassifizieren (Structured Output) und Duplikate suchen, danach verzweigen: als Duplikat schließen (Template, kein LLM) oder eine Antwort entwerfen.
 
-- Studio → Workflows → *triage-workflow* → Issue Number `105` → *Run*, danach dasselbe mit `104`
+- Studio > Workflows > *triage-workflow* > Issue Number `105` > *Run*, danach dasselbe mit `104`
 
 Erwartet: Bei 105 läuft der Graph über `close-as-duplicate`, bei 104 über `draft-reply`.
 
@@ -81,7 +81,7 @@ Erwartet: Claude Code ruft `ask_triageAgent` auf und gibt die Triage zurück.
 Quick Checks als Vitest-Tests: Wurde das richtige Tool aufgerufen, steht „critical“ im Text, wurde nichts gepostet?
 
 - `npm run eval`
-- Studio → Observability → *Traces* → einen Workflow-Lauf aufklappen
+- Studio > Observability > *Traces* > einen Workflow-Run aufklappen
 
 Erwartet: 3 grüne Tests mit Score-Tabelle (ca. 40 s). Im Trace siehst du jeden Schritt, Modellaufruf und Tool-Call mit Tokens und Latenz.
 
