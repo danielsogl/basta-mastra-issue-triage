@@ -68,7 +68,7 @@ Erwartet: Der Kommentar erscheint erst nach der Freigabe im Terminal von `npm ru
 
 ### step-05: MCP-Server
 
-Agent und Tools als MCP-Server unter `http://localhost:4111/api/mcp/triage/mcp`. Die Konfigurationen für Claude Code (`.mcp.json`) und Cursor (`.cursor/mcp.json`) liegen im Repo.
+Agent und Tools als MCP-Server unter `http://localhost:4111/api/mcp/triage/mcp`. Die Konfigurationen für Claude Code (`.mcp.json`) und Cursor (`.cursor/mcp.json`) liegen im Repo. `@mastra/mcp` 2.0 spricht nur die zustandslose MCP-Revision 2026-07-28. Getestet ist Claude Code 2.1. Wenn dein Client noch eine ältere Revision spricht, installierst du `@mastra/mcp@1`.
 
 - `npm run dev` muss laufen
 - Im Projektordner `claude` starten, mit `/mcp` prüfen, ob *triage* verbunden ist
@@ -100,6 +100,7 @@ Erwartet: Nach 15 Chunks kommt „🔌 Verbindung weg“, danach wird der komple
 | `Could not find API key` | `.env` fehlt oder `ANTHROPIC_API_KEY` ist leer. Skripte immer mit `--env-file=.env` starten. |
 | Agent kennt alte Konventionen | Memory zurücksetzen: `npm run dev` stoppen, `rm -f mastra.db* src/mastra/public/mastra.*`, neu starten. |
 | MCP-Server in Claude Code nicht verbunden | `npm run dev` läuft nicht, oder die `.mcp.json` wurde beim ersten Start nicht freigegeben (`/mcp`). |
+| Anderer MCP-Client meldet einen Versionsfehler | Der Client kennt MCP 2026-07-28 noch nicht: `npm install @mastra/mcp@1`. |
 | `npm warn install-scripts` beim Installieren | Harmlos, die Demo braucht die Install-Skripte von esbuild und fsevents nicht. |
 | Evals werden übersprungen | Ohne `ANTHROPIC_API_KEY` (oder `MODEL`) in `.env` laufen sie absichtlich nicht. |
 
