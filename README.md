@@ -14,11 +14,11 @@ cp .env.example .env   # ANTHROPIC_API_KEY eintragen
 npm run dev            # Studio: http://localhost:4111
 ```
 
-Standardmodell ist `anthropic/claude-sonnet-5`. Für einen anderen Provider setzt du in `.env` zum Beispiel `MODEL=openai/gpt-5-mini` und `OPENAI_API_KEY`. Mastra erkennt den Provider am Präfix, zusätzliche Pakete brauchst du nicht.
+Standardmodell ist `anthropic/claude-sonnet-5`. Für einen anderen Provider setzt du in `.env` zum Beispiel `MODEL=openai/gpt-5.4-mini` und `OPENAI_API_KEY`. Mastra erkennt den Provider am Präfix, zusätzliche Pakete brauchst du nicht.
 
 ## Mit einem Coding-Agent weiterbauen
 
-Im Repo liegt der offizielle [Mastra-Skill](https://github.com/mastra-ai/skills) unter `.agents/skills/mastra` (für Claude Code verlinkt nach `.claude/skills/mastra`). Er bringt deinem Coding-Agent bei, die aktuelle Mastra-API in `node_modules/@mastra/*/dist/docs/` nachzuschlagen, statt veralteten Trainingsdaten zu vertrauen. Claude Code, Cursor, Codex und Co. finden ihn automatisch.
+Im Repo liegt der offizielle [Mastra-Skill](https://github.com/mastra-ai/skills) unter `.agents/skills/mastra` (für Claude Code verlinkt nach `.claude/skills/mastra`). Er bringt deinem Coding-Agenten bei, die aktuelle Mastra-API in `node_modules/@mastra/*/dist/docs/` nachzuschlagen, statt veralteten Trainingsdaten zu vertrauen. Claude Code, Cursor, Codex und Co. finden ihn automatisch.
 
 ```bash
 npx skills update mastra -p   # Skill aktualisieren
@@ -58,7 +58,7 @@ Erwartet: Bei 105 läuft der Graph über `close-as-duplicate`, bei 104 über `dr
 
 ### step-04: Human-in-the-Loop
 
-Der Workflow pausiert vor dem Posten (`suspend`) und läuft nach der Freigabe weiter (`resume`). Außerdem verlangt das Tool `postComment` im Agent eine Bestätigung (`requireApproval`).
+Der Workflow pausiert vor dem Posten (`suspend`) und läuft nach der Freigabe weiter (`resume`). Außerdem verlangt das Tool `postComment` im Agenten eine Bestätigung (`requireApproval`).
 
 - Studio: Workflow mit `104` starten. Er stoppt bei *human-review* mit „Needs input“. Setz den Haken bei *Approved*, pass den Kommentar bei Bedarf an und klick *Resume*.
 - Terminal: `node --env-file=.env scripts/run-workflow.ts 104` (Freigabe mit `j` oder `n`)
