@@ -85,6 +85,13 @@ Quick Checks als Vitest-Tests: Wurde das richtige Tool aufgerufen, steht „crit
 
 Erwartet: 3 grüne Tests mit Score-Tabelle (ca. 40 s). Im Trace siehst du jeden Schritt, Modellaufruf und Tool-Call mit Tokens und Latenz.
 
+Dazu bewerten zwei eingebaute Scorer jeden Chat im Studio live: *Prompt Alignment* (LLM als Richter) und *Tool Call Accuracy* (reiner Code, ruft der Agent erst `getIssue`, dann `searchIssues` auf?). Workflow-Schritte, Evals und MCP haben keinen Thread und werden nicht bewertet.
+
+- Studio > Agents > *Triage Agent* > „Triagiere Issue #104“
+- Studio > Scorers > *Prompt Alignment (LLM)* > Zeile anklicken
+
+Erwartet: Tool Call Accuracy sofort mit 1, Prompt Alignment nach ca. 30–60 s mit Score und Begründung. Der Richter streut: Dieselbe Antwort bekam in den Tests 0.34 und 0.94.
+
 ### step-07: Durable Agents
 
 Derselbe Agent, dessen Loop als Workflow läuft. Ein Client kann die Verbindung verlieren, ein anderer hängt sich per `observe(runId)` wieder an.
